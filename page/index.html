@@ -36,7 +36,9 @@
 
       //Gửi event tạo msg
       $('#create_msg').submit(function(e){
+
         e.preventDefault(); // prevents page reloading
+        console.log(socket.user);
         socket.emit('create message', $('#m').val());
         $('#m').val('');
         return false;
@@ -45,12 +47,13 @@
       //Gửi event tham gia room
       $('#set_room').submit(function(e){
         e.preventDefault(); // prevents page reloading
-        socket.emit('join_room', $('#r').val());
+        socket.emit('join room', $('#r').val());
         return false;
       });
 
       //Nhận event thông báo đã kết nối vào room
-      socket.on('connected-to-room',function (room){
+      socket.on('joined room',function (room){
+        console.log(socket.user);
         $('#your_room').text('Your current room :' + room);
 
       })

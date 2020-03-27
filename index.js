@@ -10,24 +10,26 @@ app.get('/', function(req, res){
 
 var count = 0;
 nsp.on('connection', function(socket){
-  console.log('a user connected');
+  
   count ++;
   socket.user = { name : 'user_'+count , id : count };
+  console.log('a user connected '+count);
 
   //nhận sự kiên join_room từ client
-  socket.on('join_room', function(r){
-    var room_name = "room-"+r;
+  socket.on('join room', function(r){
+    var room_name = r;
     if(socket.user.room_name !== undefined){
       //leave old room
       socket.leave(socket.user.room_name);
-      console.log('user leave room : '+socket.user.room_name);
+      //console.log('user leave room : '+socket.user.room_name);
     }
     //join socket vào room mà client truyền lên
     socket.join(room_name);
     socket.user.room_name = room_name;
-    console.log('User join room :' + room_name);
+    //console.log('User join room :' + room_name);
     //thông báo xuống client là đã join vào room
-    socket.emit('connected-to-room',room_name);
+    socket.emit('joined room',room_name);
+    
   });
 
   //xử lý khi có sự kiện tạo msg từ client truyền lên
